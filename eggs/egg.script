@@ -1,0 +1,38 @@
+--go.property("level", 1)
+local speed_increase_rate = 0.05
+local score = 100
+
+local function level_up()
+	local gravity = physics.get_gravity()
+	gravity.y = gravity.y * (1 + speed_increase_rate)
+	physics.set_gravity(gravity)
+end
+
+function init(self)
+	-- local gravity = physics.get_gravity()
+	-- if gravity ~= original_gravity then
+	-- 	physics.set_gravity(original_gravity)
+	-- end
+end
+
+function fixed_update(self, dt)
+	if go.get_position().y < 0 then
+		msg.post("main:/main", "game_over")
+		go.delete()
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("collision_response") then
+		if message.other_id == hash("/basket") then
+			sound.play("#sound")
+			if message.other_group == hash("sensor") then
+				particlefx.play("#pickup")
+				msg.post("main:/main#gui", "add_score", {amount = score})
+				level_up()
+				--pprint(message)
+				go.delete()
+			end
+		end
+	end
+end

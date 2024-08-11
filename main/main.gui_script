@@ -1,0 +1,112 @@
+local high_score = 0
+local path = sys.get_save_file("IntroToDefold", "high_score")
+local data = sys.load(path)
+if data.high_score ~= nil then
+	high_score = data.high_score
+end
+
+local function save_high_score()
+	local ok = sys.save(path, {high_score = high_score})
+	if not ok then
+		print("Failed to save", path)
+		return
+	end
+end
+
+local function title_screen(self)
+	gui.set_enabled(self.game_title_window, true)
+	gui.set_enabled(self.game_over_window, false)
+	gui.set_enabled(self.in_game_window, false)
+end
+
+local function start_game(self)
+	gui.set_enabled(self.game_title_window, false)
+	gui.set_enabled(self.game_over_window, false)
+	gui.set_enabled(self.in_game_window, true)
+	msg.post(self.loader, "load")
+	self.in_game = true
+end
+
+local function stop_game(self)
+	gui.set_enabled(self.game_title_window, false)
+	gui.set_enabled(self.game_over_window, true)
+	gui.set_enabled(self.in_game_window, false)
+	msg.post(self.loader, "unload")
+	self.in_game = false
+end
+
+local function refresh_high_score(self)
+	gui.set_text(self.high_score_node, tostring(high_score))
+end
+
+function init(self)
+	msg.post("@render:", "use_fixed_fit_projection")
+	self.score = 0
+	self.score_node = gui.get_node("score")
+	self.high_score_node = gui.get_node("high_score")
+	
+	self.game_title_window = gui.get_node("game-title")
+	self.game_over_window = gui.get_node("game-over")
+	self.in_game_window = gui.get_node("in-game")
+	self.play_btn = gui.get_node("play")
+	self.replay_btn = gui.get_node("replay")
+	self.pause_btn = gui.get_node("pause")
+	self.loader = "#gameproxy"
+	self.pause = false
+	self.in_game = false
+	title_screen(self)
+	refresh_high_score(self)
+	msg.post("#", "acquire_input_focus")
+end
+
+function final(self)
+	msg.post(".", "release_input_focus")
+end
+
+local function scale_down(self, node)
+	local s = 1.0
+	gui.animate(node, gui.PROP_SCALE, vmath.vector4(s, s, s, 0), gui.EASING_OUT, 0.05)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("proxy_loaded") then
+		msg.post(sender, "enable")
+		--msg.post(sender, "acquire_input_focus") -- sender or self.loader
+	elseif message_id == hash("add_score") then
+		local s = 1.2
+		self.score = self.score + message.amount
+		gui.set_text(self.score_node, tostring(self.score))
+		gui.animate(self.score_node, gui.PROP_SCALE, vmath.vector4(s, s, s, 0), gui.EASING_OUT, 0.1, 0.0, scale_down)
+
+		if self.score > high_score then
+			high_score = self.score
+			refresh_high_score(self)
+		end
+	elseif message_id == hash("game_over") then
+		save_high_score()
+		stop_game(self)
+	elseif message_id == hash("game_start") then
+		self.score = 0
+		gui.set_text(self.score_node, tostring(self.score))
+		start_game(self)
+	end
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("touch") and action.pressed then
+		if not self.in_game and (gui.pick_node(self.play_btn, action.x, action.y) or gui.pick_node(self.replay_btn, action.x, action.y)) then
+			print("not in game", not self.in_game)
+			msg.post("#", "game_start")
+			return true
+		elseif gui.pick_node(self.pause_btn, action.x, action.y) then
+			self.paused = not self.paused
+			if self.paused then
+				gui.play_flipbook(self.pause_btn, hash("right"))
+				msg.post("#gameproxy", "set_time_step", {factor = 0, mode = 1})
+			else
+				gui.play_flipbook(self.pause_btn, hash("pause"))
+				msg.post("#gameproxy", "set_time_step", {factor = 1, mode = 1})
+			end
+		end
+	end
+end

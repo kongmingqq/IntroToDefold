@@ -1,0 +1,23 @@
+[bootstrap]
+main_collection = /main/main.collectionc
+
+[script]
+shared_state = 1
+
+[display]
+width = 720
+height = 1280
+high_dpi = 1
+
+[android]
+input_method = HiddenInputField
+
+[project]
+title = IntroToDefold
+
+[physics]
+gravity_y = -1000.0
+scale = 0.01
+use_fixed_timestep = 1
+debug = 0
+

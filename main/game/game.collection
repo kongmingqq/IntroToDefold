@@ -1,0 +1,19 @@
+name: "game"
+instances {
+  id: "basket"
+  prototype: "/basket/basket.go"
+  position {
+    x: 360.0
+    y: 200.0
+    z: 1.0
+  }
+}
+instances {
+  id: "factory"
+  prototype: "/eggs/factory.go"
+  position {
+    x: 360.0
+    y: 1300.0
+  }
+}
+scale_along_z: 0

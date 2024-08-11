@@ -1,0 +1,33 @@
+local frequency = 0.5
+local min_x = 50
+local max_x = 670
+local level = 1
+
+
+function init(self)
+	self.timer = 1/frequency
+	math.randomseed(0)
+	self.paused = false
+end
+
+function fixed_update(self, dt)
+	if not self.paused then
+		self.timer = self.timer - dt
+		if self.timer <= 0 then
+			self.timer = 1/frequency
+			local p = go.get_position()
+			p.x = vmath.lerp(math.random(), min_x, max_x)
+			local component = "#egg_factory"
+			factory.create(component, p, nil, { level = level })
+			level = level + 1
+		end
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("start_factory") then
+		self.paused = false
+	elseif  message_id == hash("stop_factory") then
+		self.paused = true
+	end
+end

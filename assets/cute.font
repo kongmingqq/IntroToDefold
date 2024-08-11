@@ -1,0 +1,4 @@
+font: "/assets/COOPBL.TTF"
+material: "/builtins/fonts/font.material"
+size: 100
+characters: "0123456789"

@@ -1,0 +1,33 @@
+name: "main"
+instances {
+  id: "main"
+  prototype: "/main/main.go"
+}
+scale_along_z: 0
+embedded_instances {
+  id: "background"
+  data: "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"default_animation: \\\"bg\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "textures {\\n"
+  "  sampler: \\\"texture_sampler\\\"\\n"
+  "  texture: \\\"/main/player_sprites.atlas\\\"\\n"
+  "}\\n"
+  "\"\n"
+  "  scale {\n"
+  "    z: 1.0E-6\n"
+  "  }\n"
+  "}\n"
+  ""
+  position {
+    x: 360.0
+    y: 640.0
+    z: -0.5
+  }
+  scale3 {
+    x: 0.5
+    y: 0.5
+  }
+}

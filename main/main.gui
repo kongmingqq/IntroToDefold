@@ -1,0 +1,170 @@
+script: "/main/main.gui_script"
+fonts {
+  name: "cute"
+  font: "/assets/cute.font"
+}
+fonts {
+  name: "stats"
+  font: "/assets/stats.font"
+}
+textures {
+  name: "player_sprites"
+  texture: "/main/player_sprites.atlas"
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "game-over"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 360.0
+    y: 700.0
+  }
+  type: TYPE_BOX
+  texture: "player_sprites/game-over"
+  id: "display-game-over"
+  parent: "game-over"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 360.0
+    y: 200.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "player_sprites/replay"
+  id: "replay"
+  parent: "game-over"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "game-title"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 360.0
+    y: 700.0
+  }
+  type: TYPE_BOX
+  texture: "player_sprites/egg-catcher"
+  id: "display-game-title"
+  parent: "game-title"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 360.0
+    y: 200.0
+  }
+  scale {
+    x: 0.5
+    y: 0.5
+  }
+  type: TYPE_BOX
+  texture: "player_sprites/play"
+  id: "play"
+  parent: "game-title"
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_BOX
+  id: "in-game"
+  inherit_alpha: true
+  alpha: 0.0
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 357.0
+    y: 1214.0
+  }
+  type: TYPE_BOX
+  texture: "player_sprites/pause"
+  id: "pause"
+  parent: "in-game"
+  alpha: 0.5
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 580.0
+    y: 1200.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  type: TYPE_TEXT
+  text: "0"
+  font: "cute"
+  id: "score"
+  outline {
+    y: 0.2
+  }
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 160.0
+    y: 1170.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.0
+    y: 0.2
+    z: 0.0
+  }
+  type: TYPE_TEXT
+  text: "0"
+  font: "stats"
+  id: "high_score"
+  inherit_alpha: true
+}
+nodes {
+  position {
+    x: 160.0
+    y: 1220.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+  }
+  color {
+    x: 0.102
+    y: 0.302
+    z: 0.102
+  }
+  type: TYPE_TEXT
+  text: "High Score"
+  font: "stats"
+  id: "high_score_label"
+  inherit_alpha: true
+}
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT

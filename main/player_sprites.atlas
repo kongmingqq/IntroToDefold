@@ -1,0 +1,25 @@
+images {
+  image: "/assets/basket.png"
+}
+images {
+  image: "/assets/egg-catcher.png"
+}
+images {
+  image: "/assets/game-over.png"
+}
+images {
+  image: "/assets/play.png"
+}
+images {
+  image: "/assets/replay.png"
+}
+images {
+  image: "/assets/bg.jpg"
+}
+images {
+  image: "/assets/pause.png"
+}
+images {
+  image: "/assets/right.png"
+}
+extrude_borders: 2
